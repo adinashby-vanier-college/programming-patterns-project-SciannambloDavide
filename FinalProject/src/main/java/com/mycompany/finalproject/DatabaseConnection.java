@@ -21,7 +21,7 @@ public class DatabaseConnection {
         return DriverManager.getConnection(DATABASE_URL);
     }
      public static void initialize() {
-        String createTableQuery = "CREATE TABLE IF NOT EXISTS Books ("
+        String createBooksTableQuery = "CREATE TABLE IF NOT EXISTS Books ("
                 + "SN TEXT PRIMARY KEY,"
                 + "Title TEXT NOT NULL,"
                 + "Author TEXT NOT NULL,"
@@ -30,10 +30,11 @@ public class DatabaseConnection {
                 + "Quantity INTEGER,"
                 + "Issued INTEGER DEFAULT 0,"
                 + "addedDate DATE NOT NULL)";
+        String create
 
         try (Connection conn = getConnection();
              Statement statement = conn.createStatement()) {
-            statement.executeUpdate(createTableQuery);
+            statement.executeUpdate(createBooksTableQuery);
         } catch (SQLException e) {
             e.printStackTrace();
             // Handle the exception appropriately (e.g., log the error or throw a custom exception)

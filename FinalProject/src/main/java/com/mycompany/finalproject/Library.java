@@ -53,19 +53,18 @@ public class Library {
     }
 
     public boolean issueBook(Book book, Student student) {
-        // Verify student information (you may need to implement this verification)
         if (!verifyStudentInformation(student)) {
             return false; // Student information is not valid
         }
 
         // Check if the book is available
-        if (book.getQte()<= 0) {
+        if (book.getQte() <= 0) {
             return false; // Book is not available
         }
 
         // Decrease the quantity of available copies and increase the issued copies
-        book.setQte(book.getQte()- 1);
-        book.setIssuedQte(book.getIssuedQte()+ 1);
+        book.setQte(book.getQte() - 1);
+        book.setIssuedQte(book.getIssuedQte() + 1);
 
         // Add a new entry to the "IssuedBooks" table
         addToIssuedBooksTable(book, student);
@@ -74,11 +73,12 @@ public class Library {
         return true;
     }
 
-    private boolean verifyStudentInformation(Student student) {
-        // Implement your student verification logic here
-        // You may check student details, roll number, etc.
-        // Return true if student information is valid; otherwise, return false
-        return true;
+    public boolean verifyStudentInformation(Student student) {
+        // Check if the student object and its fields are not null and not empty
+        return student != null
+                && student.getStudentId() != 0 && student.getStudentId() != 0
+                && student.getName() != null && !student.getName().isEmpty()
+                && student.getContact() != null && !student.getContact().isEmpty();
     }
 
     private void addToIssuedBooksTable(Book book, Student student) {
@@ -99,5 +99,4 @@ public class Library {
             // Handle the exception appropriately (e.g., log the error or throw a custom exception)
         }
     }
-
 }
