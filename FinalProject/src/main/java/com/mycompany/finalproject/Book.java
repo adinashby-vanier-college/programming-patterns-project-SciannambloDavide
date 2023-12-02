@@ -138,8 +138,5 @@ public class Book {
         }
         return Objects.equals(this.dateOfPurchase, other.dateOfPurchase);
     }
-
-    
-    
     
 }
