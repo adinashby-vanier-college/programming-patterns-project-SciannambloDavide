@@ -11,10 +11,10 @@ import java.util.Objects;
  * @author 2276744
  */
 public class Book {
-    private int SN, price, qte, issuedQte;
-    String title, author, publisher, dateOfPurchase;
+    private int price, qte, issuedQte;
+    String title, author, publisher, dateOfPurchase, SN;
 
-    public Book(int SN, int price, int qte, int issuedQte, String title, String author, String publisher, String dateOfPurchase) {
+    public Book(String SN, int price, int qte, int issuedQte, String title, String author, String publisher, String dateOfPurchase) {
         this.SN = SN;
         this.price = price;
         this.qte = qte;
@@ -25,13 +25,20 @@ public class Book {
         this.dateOfPurchase = dateOfPurchase;
     }
 
-    public int getSN() {
+    @Override
+    public String toString() {
+        return "Book{" + "price=" + price + ", qte=" + qte + ", issuedQte=" + issuedQte + ", title=" + title + ", author=" + author + ", publisher=" + publisher + ", dateOfPurchase=" + dateOfPurchase + ", SN=" + SN + '}';
+    }
+
+    public String getSN() {
         return SN;
     }
 
-    public void setSN(int SN) {
+    public void setSN(String SN) {
         this.SN = SN;
     }
+
+    
 
     public int getPrice() {
         return price;
@@ -91,15 +98,15 @@ public class Book {
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 37 * hash + this.SN;
-        hash = 37 * hash + this.price;
-        hash = 37 * hash + this.qte;
-        hash = 37 * hash + this.issuedQte;
-        hash = 37 * hash + Objects.hashCode(this.title);
-        hash = 37 * hash + Objects.hashCode(this.author);
-        hash = 37 * hash + Objects.hashCode(this.publisher);
-        hash = 37 * hash + Objects.hashCode(this.dateOfPurchase);
+        int hash = 7;
+        hash = 89 * hash + this.price;
+        hash = 89 * hash + this.qte;
+        hash = 89 * hash + this.issuedQte;
+        hash = 89 * hash + Objects.hashCode(this.title);
+        hash = 89 * hash + Objects.hashCode(this.author);
+        hash = 89 * hash + Objects.hashCode(this.publisher);
+        hash = 89 * hash + Objects.hashCode(this.dateOfPurchase);
+        hash = 89 * hash + Objects.hashCode(this.SN);
         return hash;
     }
 
@@ -115,9 +122,6 @@ public class Book {
             return false;
         }
         final Book other = (Book) obj;
-        if (this.SN != other.SN) {
-            return false;
-        }
         if (this.price != other.price) {
             return false;
         }
@@ -136,7 +140,11 @@ public class Book {
         if (!Objects.equals(this.publisher, other.publisher)) {
             return false;
         }
-        return Objects.equals(this.dateOfPurchase, other.dateOfPurchase);
+        if (!Objects.equals(this.dateOfPurchase, other.dateOfPurchase)) {
+            return false;
+        }
+        return Objects.equals(this.SN, other.SN);
     }
+
     
 }

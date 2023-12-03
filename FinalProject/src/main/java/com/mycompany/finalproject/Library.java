@@ -19,6 +19,10 @@ public class Library {
     private static Library libraryObject;
     private List<Book> books;
 
+    public Library() {
+        books = new ArrayList<>();
+    }
+
     public static Library getInstance() {
         if (libraryObject == null) {
             libraryObject = new Library();
@@ -28,6 +32,7 @@ public class Library {
 
     public void addBook(Book book) {
         books.add(book);
+        insertBookIntoDatabase(book);
     }
 
     private void insertBookIntoDatabase(Book book) {
@@ -35,7 +40,7 @@ public class Library {
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try ( Connection connection = DatabaseConnection.getConnection();  PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
-            preparedStatement.setInt(1, book.getSN());
+            preparedStatement.setString(1, book.getSN());
             preparedStatement.setString(2, book.getTitle());
             preparedStatement.setString(3, book.getAuthor());
             preparedStatement.setString(4, book.getPublisher());
@@ -86,7 +91,7 @@ public class Library {
                 + "VALUES (?, ?, ?, ?, ?)";
 
         try ( Connection connection = DatabaseConnection.getConnection();  PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
-            preparedStatement.setInt(1, book.getSN());
+            preparedStatement.setString(1, book.getSN());
             preparedStatement.setInt(2, student.getStudentId());
             preparedStatement.setString(3, student.getName());
             preparedStatement.setString(4, student.getContact());
@@ -99,4 +104,14 @@ public class Library {
             // Handle the exception appropriately (e.g., log the error or throw a custom exception)
         }
     }
+
+    public boolean containsBook(String sn) {
+        for (Book book : books) {
+            if (book.getSN().equals(sn)) {
+                return true; // Book with the same SN exists in the library
+            }
+        }
+        return false; // Book with the specified SN is not in the library
+    }
+
 }
