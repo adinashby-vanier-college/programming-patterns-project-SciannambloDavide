@@ -11,6 +11,7 @@ import java.util.Objects;
  * @author 2276744
  */
 public class Book {
+
     private int price, qte, issuedQte;
     String title, author, publisher, dateOfPurchase, SN;
 
@@ -27,7 +28,11 @@ public class Book {
 
     @Override
     public String toString() {
-        return "Book{" + "price=" + price + ", qte=" + qte + ", issuedQte=" + issuedQte + ", title=" + title + ", author=" + author + ", publisher=" + publisher + ", dateOfPurchase=" + dateOfPurchase + ", SN=" + SN + '}';
+        return "Book:\n" + "\nPrice: " + price + "\nQuantity: " + qte
+                + "\nIssued Quantity: " + issuedQte + "\nTitle: " + title
+                + "\nAuthor: " + author + "\nPublisher: " + publisher
+                + "\nDate of Purchase: " + dateOfPurchase + "\nSerial Number: "
+                + "" + SN + '}';
     }
 
     public String getSN() {
@@ -37,8 +42,6 @@ public class Book {
     public void setSN(String SN) {
         this.SN = SN;
     }
-
-    
 
     public int getPrice() {
         return price;
@@ -146,5 +149,4 @@ public class Book {
         return Objects.equals(this.SN, other.SN);
     }
 
-    
 }

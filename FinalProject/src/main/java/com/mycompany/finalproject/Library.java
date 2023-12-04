@@ -9,15 +9,17 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  *
  * @author 2276744
  */
-public class Library {
+public class Library implements LibraryObservable {
 
+    private List<LibraryObserver> observers = new ArrayList<>();
     private static Library libraryObject;
-    private List<Book> books;
+    private ArrayList<Book> books;
 
     public Library() {
         books = new ArrayList<>();
@@ -33,13 +35,45 @@ public class Library {
     public void addBook(Book book) {
         books.add(book);
         insertBookIntoDatabase(book);
+        notifyObservers();  //notify the observers when a new book is added
+
+    }
+
+    public void registerObserver(LibraryObserver observer) {
+        observers.add(observer);
+    }
+
+    public void removeObserver(LibraryObserver observer) {
+        observers.remove(observer);
+    }
+
+    public void notifyObservers() {
+        for (LibraryObserver observer : observers) {
+            observer.update();  //this is responsible for updating the booksTextBox in the MainForm, using it's update() method
+        }
+    }
+
+    public static Library getlObject() {
+        return libraryObject;
+    }
+
+    public static void setlObject(Library lObject) {
+        Library.libraryObject = lObject;
+    }
+
+    public ArrayList<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(ArrayList<Book> books) {
+        this.books = books;
     }
 
     private void insertBookIntoDatabase(Book book) {
         String insertQuery = "INSERT INTO Books (SN, Title, Author, Publisher, Price, Quantity, Issued, addedDate) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
-        try ( Connection connection = DatabaseConnection.getConnection();  PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
+        try (Connection connection = DatabaseConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
             preparedStatement.setString(1, book.getSN());
             preparedStatement.setString(2, book.getTitle());
             preparedStatement.setString(3, book.getAuthor());
@@ -90,7 +124,7 @@ public class Library {
         String insertQuery = "INSERT INTO IssuedBooks (SN, StId, StName, StudentContact, IssueDate) "
                 + "VALUES (?, ?, ?, ?, ?)";
 
-        try ( Connection connection = DatabaseConnection.getConnection();  PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
+        try (Connection connection = DatabaseConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
             preparedStatement.setString(1, book.getSN());
             preparedStatement.setInt(2, student.getStudentId());
             preparedStatement.setString(3, student.getName());
@@ -112,6 +146,51 @@ public class Library {
             }
         }
         return false; // Book with the specified SN is not in the library
+    }
+
+    public List<LibraryObserver> getObservers() {
+        return observers;
+    }
+
+    public void setObservers(List<LibraryObserver> observers) {
+        this.observers = observers;
+    }
+
+    public static Library getLibraryObject() {
+        return libraryObject;
+    }
+
+    public static void setLibraryObject(Library libraryObject) {
+        Library.libraryObject = libraryObject;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Library other = (Library) obj;
+        if (!Objects.equals(this.observers, other.observers)) {
+            return false;
+        }
+        return Objects.equals(this.books, other.books);
+    }
+
+    @Override
+    public String toString() {
+        return books.toString();
     }
 
 }

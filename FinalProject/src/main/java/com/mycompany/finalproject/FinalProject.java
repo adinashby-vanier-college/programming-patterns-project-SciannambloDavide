@@ -1,7 +1,6 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  */
-
 package com.mycompany.finalproject;
 
 import java.util.Random;
@@ -13,12 +12,22 @@ import java.util.Random;
 public class FinalProject {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
-        Library library = new Library();
-        Book book1 = new Book("Tester", 23, 1, 13, "Title1", "Davide Sciannamblo", "Marc Anthony", "Today");
-        DatabaseConnection.initialize();
-                //library.addBook(book1);
-                DatabaseConnection.loadBooks(library);
 
+        try {
+            DatabaseConnection.initialize();
+
+            Library library = Library.getInstance();
+            Book book1 = new Book("Tester", 23, 1, 13, "Title1", "Davide Sciannamblo", "Marc Anthony", "Today");
+
+            DatabaseConnection.loadBooks(library);
+
+            decisionFrame decisionFrame = new decisionFrame();
+
+            decisionFrame.setVisible(true);
+
+        } catch (Exception e) {
+            e.printStackTrace(); // This will print any exceptions that occur
+        }
     }
+
 }

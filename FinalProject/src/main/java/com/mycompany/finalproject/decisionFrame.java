@@ -32,6 +32,10 @@ public class decisionFrame extends javax.swing.JFrame {
         titleLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        setFocusTraversalPolicyProvider(true);
+        setLocation(new java.awt.Point(750, 400));
+        setResizable(false);
 
         titleLabel.setFont(new java.awt.Font("Sitka Text", 1, 24)); // NOI18N
         titleLabel.setText("Are you a");
@@ -40,11 +44,21 @@ public class decisionFrame extends javax.swing.JFrame {
         librarianButton.setText("Librarian");
         librarianButton.setToolTipText("Gives you access to librarian methods");
         librarianButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        librarianButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                librarianButtonActionPerformed(evt);
+            }
+        });
 
         studentButton.setFont(new java.awt.Font("Sitka Text", 1, 18)); // NOI18N
         studentButton.setText("Student");
         studentButton.setToolTipText("Gives you access to librarian methods");
         studentButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        studentButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                studentButtonActionPerformed(evt);
+            }
+        });
 
         titleLabel1.setFont(new java.awt.Font("Sitka Text", 1, 24)); // NOI18N
         titleLabel1.setText("or");
@@ -81,6 +95,17 @@ public class decisionFrame extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void studentButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_studentButtonActionPerformed
+        this.setVisible(false);
+        studentFrame sFrame = new studentFrame();
+        sFrame.setVisible(true);
+    }//GEN-LAST:event_studentButtonActionPerformed
+
+    private void librarianButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_librarianButtonActionPerformed
+        this.setVisible(false);
+        librarianFrame lFrame = new librarianFrame();
+        lFrame.setVisible(true);    }//GEN-LAST:event_librarianButtonActionPerformed
 
     /**
      * @param args the command line arguments
