@@ -4,6 +4,10 @@
  */
 package com.mycompany.finalproject;
 
+import java.util.ArrayList;
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 /**
  *
  * @author Admin
@@ -13,8 +17,13 @@ public class librarianFrame extends javax.swing.JFrame {
     /**
      * Creates new form librarianFrame
      */
+    private ResourceBundle bundle;
+    private ResourceBundle bundleFR;
+
     public librarianFrame() {
         initComponents();
+        bundle = ResourceBundle.getBundle("FormLanguage");
+        bundleFR = ResourceBundle.getBundle("FormLanguage", Locale.FRANCE);
     }
 
     /**
@@ -41,8 +50,8 @@ public class librarianFrame extends javax.swing.JFrame {
         snTextField = new javax.swing.JTextField();
         snLabel = new javax.swing.JLabel();
         addBookButton = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        issueBookButton = new javax.swing.JButton();
+        returnBookButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         availableBooksTextField = new javax.swing.JTextArea();
@@ -70,10 +79,15 @@ public class librarianFrame extends javax.swing.JFrame {
         snLabel.setText("Serial Number");
 
         addBookButton.setText("Add Book");
+        addBookButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addBookButtonActionPerformed(evt);
+            }
+        });
 
-        jButton1.setText("Issue Book");
+        issueBookButton.setText("Issue Book");
 
-        jButton2.setText("Return Book");
+        returnBookButton.setText("Return Book");
 
         jLabel1.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
         jLabel1.setText("Librarian View");
@@ -84,8 +98,18 @@ public class librarianFrame extends javax.swing.JFrame {
         jScrollPane2.setViewportView(availableBooksTextField);
 
         englishButton.setText("English");
+        englishButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                englishButtonActionPerformed(evt);
+            }
+        });
 
         frenchButton.setText("French");
+        frenchButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                frenchButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -108,9 +132,9 @@ public class librarianFrame extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(addBookButton)
                                 .addGap(18, 18, 18)
-                                .addComponent(jButton2)
+                                .addComponent(returnBookButton)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButton1))
+                                .addComponent(issueBookButton))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(35, 35, 35)
                                 .addComponent(dateLabel)
@@ -198,8 +222,8 @@ public class librarianFrame extends javax.swing.JFrame {
                         .addGap(52, 52, 52)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(addBookButton)
-                            .addComponent(jButton1)
-                            .addComponent(jButton2)))
+                            .addComponent(issueBookButton)
+                            .addComponent(returnBookButton)))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -215,6 +239,79 @@ public class librarianFrame extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void englishButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_englishButtonActionPerformed
+        // TODO add your handling code here:
+        jLabel1.setText(bundle.getString("LibrarianView"));
+        titleLabel.setText(bundle.getString("BookName"));
+        authorLabel.setText(bundle.getString("Author"));
+        publisherLabel.setText(bundle.getString("Publisher"));
+        priceLabel.setText(bundle.getString("Price"));
+        dateLabel.setText(bundle.getString("Date"));
+        snLabel.setText(bundle.getString("SerialNumber"));
+        addBookButton.setText(bundle.getString("AddBook"));
+        returnBookButton.setText(bundle.getString("ReturnBook"));
+        issueBookButton.setText(bundle.getString("IssueBook"));
+    }//GEN-LAST:event_englishButtonActionPerformed
+
+    private void frenchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_frenchButtonActionPerformed
+        // TODO add your handling code here:
+        jLabel1.setText(bundleFR.getString("LibrarianView"));
+        titleLabel.setText(bundleFR.getString("BookName"));
+        authorLabel.setText(bundleFR.getString("Author"));
+        publisherLabel.setText(bundleFR.getString("Publisher"));
+        priceLabel.setText(bundleFR.getString("Price"));
+        dateLabel.setText(bundleFR.getString("Date"));
+        snLabel.setText(bundleFR.getString("SerialNumber"));
+        addBookButton.setText(bundleFR.getString("AddBook"));
+        returnBookButton.setText(bundleFR.getString("ReturnBook"));
+        issueBookButton.setText(bundleFR.getString("IssueBook"));
+    }//GEN-LAST:event_frenchButtonActionPerformed
+// Method to update the availableBooksTextField with the list of books
+
+//    private void updateAvailableBooksDisplay() {
+//        // Clear the current display
+//        availableBooksTextField.setText("");
+//
+//        // Fetch the list of available books
+//        ArrayList<Book> availableBooks = Library.getInstance().getBooks();
+//
+//        // Build the display string for each book and append it to the text area
+//        for (Book book : availableBooks) {
+//            if (book.getQte() > 0) {  // Assuming getQte() returns the quantity of available books
+//                String bookDetails = book.getTitle() + " by " + book.getAuthor()
+//                        + " - " + book.getPublisher() + " - "
+//                        + "Price: " + book.getPrice()
+//                        + " - " + "Serial Number: " + book.getSN() + "\n";
+//                availableBooksTextField.append(bookDetails);
+//            }
+//        }
+//    }
+    private void addBookButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBookButtonActionPerformed
+//        String bookName = bookNameTextField.getText();
+//    String author = authorTextField.getText();
+//    String publisher = publisherTextField.getText();
+//    String priceStr = priceTextField.getText();
+//    String date = dateTextField.getText();
+//    String serialNumber = serialNumberTextField.getText();
+//
+//    if (bookName.isEmpty()  author.isEmpty()  publisher.isEmpty()  priceStr.isEmpty()  date.isEmpty() || serialNumber.isEmpty()) {
+//        return;
+//    }
+//
+//    int price = Integer.parseInt(priceStr); // Add try-catch block for NumberFormatException
+//
+//    Book newBook = new Book(serialNumber, price, 1, 0, bookName, author, publisher, date);
+//
+//    try {
+//        Library.getInstance().addBook(newBook);
+//
+//        clearBookInputFields();
+//
+//    } catch (SQLException ex) {
+//    }
+
+    }//GEN-LAST:event_addBookButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -261,9 +358,8 @@ public class librarianFrame extends javax.swing.JFrame {
     private javax.swing.JTextField dateTextField;
     private javax.swing.JButton englishButton;
     private javax.swing.JButton frenchButton;
+    private javax.swing.JButton issueBookButton;
     public javax.swing.JTextArea issuedBooksTextArea;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -271,6 +367,7 @@ public class librarianFrame extends javax.swing.JFrame {
     private javax.swing.JTextField priceTextField;
     private javax.swing.JLabel publisherLabel;
     private javax.swing.JTextField publisherTextField;
+    private javax.swing.JButton returnBookButton;
     private javax.swing.JLabel snLabel;
     private javax.swing.JTextField snTextField;
     private javax.swing.JLabel titleLabel;

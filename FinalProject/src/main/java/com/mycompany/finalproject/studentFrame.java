@@ -6,6 +6,8 @@ package com.mycompany.finalproject;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -15,11 +17,16 @@ import java.util.logging.Logger;
  */
 public class studentFrame extends javax.swing.JFrame {
 
+    private ResourceBundle bundle;
+    private ResourceBundle bundleFR;
+
     /**
      * Creates new form studentFrame
      */
     public studentFrame() {
         initComponents();
+        bundle = ResourceBundle.getBundle("FormLanguage");
+        bundleFR = ResourceBundle.getBundle("FormLanguage", Locale.FRANCE);
     }
 
     /**
@@ -130,8 +137,18 @@ public class studentFrame extends javax.swing.JFrame {
         snLabel.setText("Serial Number");
 
         englishButton.setText("English");
+        englishButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                englishButtonActionPerformed(evt);
+            }
+        });
 
         frenchButton.setText("French");
+        frenchButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                frenchButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -243,9 +260,9 @@ public class studentFrame extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(bookNameLabel)
-                                    .addComponent(authorLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(authorLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(bookNameLabel))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(bookNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -369,7 +386,7 @@ public class studentFrame extends javax.swing.JFrame {
      }//GEN-LAST:event_borrowBookButtonActionPerformed
 
     private void returnBookButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_returnBookButtonActionPerformed
-        String serialNumber = snTextField.getText(); 
+        String serialNumber = snTextField.getText();
 
         Book bookToReturn = null; // Declare the variable outside the try block
 
@@ -396,6 +413,42 @@ public class studentFrame extends javax.swing.JFrame {
         } else {
             // Handle the case where the book is not found or serial number is invalid, yeah didnt finish
         }    }//GEN-LAST:event_returnBookButtonActionPerformed
+
+    private void frenchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_frenchButtonActionPerformed
+        // TODO add your handling code here:
+        jLabel1.setText(bundleFR.getString("LibrarianView"));
+        searchByTitleButton.setText(bundleFR.getString("SearchByTitle"));
+        searchByPublisherButton.setText(bundleFR.getString("SearchByPublisher"));
+        searchByNameButton.setText(bundleFR.getString("SearchByAuthor"));
+        titleLabel.setText(bundleFR.getString("BookName"));
+        authorLabel.setText(bundleFR.getString("Author"));
+        publisherLabel.setText(bundleFR.getString("Publisher"));
+        priceLabel.setText(bundleFR.getString("Price"));
+        dateLabel.setText(bundleFR.getString("Date"));
+        snLabel.setText(bundleFR.getString("SerialNumber"));
+        returnBookButton.setText(bundleFR.getString("ReturnBook"));
+        borrowBookButton.setText(bundleFR.getString("BorrowBook"));
+        titleLabel1.setText(bundleFR.getString("AvailableBooks"));
+        titleLabel2.setText(bundleFR.getString("IssuedBooks"));
+    }//GEN-LAST:event_frenchButtonActionPerformed
+
+    private void englishButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_englishButtonActionPerformed
+        // TODO add your handling code here:
+        jLabel1.setText(bundle.getString("LibrarianView"));
+        searchByTitleButton.setText(bundle.getString("SearchByTitle"));
+        searchByPublisherButton.setText(bundle.getString("SearchByPublisher"));
+        searchByNameButton.setText(bundle.getString("SearchByAuthor"));
+        titleLabel.setText(bundle.getString("BookName"));
+        authorLabel.setText(bundle.getString("Author"));
+        publisherLabel.setText(bundle.getString("Publisher"));
+        priceLabel.setText(bundle.getString("Price"));
+        dateLabel.setText(bundle.getString("Date"));
+        snLabel.setText(bundle.getString("SerialNumber"));
+        returnBookButton.setText(bundle.getString("ReturnBook"));
+        borrowBookButton.setText(bundle.getString("BorrowBook"));
+        titleLabel1.setText(bundle.getString("AvailableBooks"));
+        titleLabel2.setText(bundle.getString("IssuedBooks"));
+    }//GEN-LAST:event_englishButtonActionPerformed
     private void removeBookFromAvailableBooks(Book book) {
         String[] lines = availableBooksTextArea.getText().split("\n");
         StringBuilder sb = new StringBuilder();
