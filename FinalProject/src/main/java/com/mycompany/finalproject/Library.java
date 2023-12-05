@@ -6,10 +6,15 @@ package com.mycompany.finalproject;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.TreeMap;
 
 /**
  *
@@ -147,52 +152,28 @@ public class Library implements LibraryObservable {
         }
         return false; // Book with the specified SN is not in the library
     }
-      public boolean returnBook(Book book, Student student) {
-        String deleteQuery = "DELETE FROM IssuedBooks WHERE SN = ? AND StId = ?";
 
-        try (Connection connection = DatabaseConnection.getInstance().getConnection();
-             PreparedStatement deleteStatement = connection.prepareStatement(deleteQuery)) {
-            deleteStatement.setString(1, book.getSN());
-            deleteStatement.setInt(2, student.getStudentId());
+    public static Map<String, String> viewCatalog() throws SQLException {
+        Map<String, String> catalog = new LinkedHashMap<>();
+        try (Connection conn = DatabaseConnection.getConnection(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery("SELECT SN, Title FROM Books ORDER BY SN")) {
 
-            // Execute the delete query
-            int rowsDeleted = deleteStatement.executeUpdate();
-
-            if (rowsDeleted > 0) {
-                // Successfully returned the book, update book quantities
-                book.setQte(book.getQte() + 1);
-                book.setIssuedQte(book.getIssuedQte() - 1);
-                updateBookInDatabase(book);
-
-                return true;
-            } else {
-                // No matching entry found in IssuedBooks
-                return false;
+            while (rs.next()) {
+                catalog.put(rs.getString("SN"), rs.getString("Title"));
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
         }
-        
-    }
-      
-      private void updateBookInDatabase(Book book) {
-        String updateQuery = "UPDATE Books SET Quantity = ?, Issued = ? WHERE SN = ?";
-
-        try (Connection connection = DatabaseConnection.getInstance().getConnection();
-             PreparedStatement updateStatement = connection.prepareStatement(updateQuery)) {
-            updateStatement.setInt(1, book.getQte());
-            updateStatement.setInt(2, book.getIssuedQte());
-            updateStatement.setString(3, book.getSN());
-
-            // Execute the update query
-            updateStatement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        return catalog;
     }
 
+    public static Map<String, String> viewIssuedBooks() throws SQLException {
+        Map<String, String> issuedBooks = new LinkedHashMap<>();
+        try (Connection conn = DatabaseConnection.getConnection(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery("SELECT SN, StudentId FROM IssuedBooks ORDER BY SN")) {
 
+            while (rs.next()) {
+                issuedBooks.put(rs.getString("SN"), rs.getString("StudentId"));
+            }
+        }
+        return issuedBooks;
+    }
 
     public List<LibraryObserver> getObservers() {
         return observers;
