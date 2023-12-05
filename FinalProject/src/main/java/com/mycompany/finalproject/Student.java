@@ -104,7 +104,7 @@ public class Student {
     }
 
     // Method to borrow a book
-    public boolean borrow(Book book) throws SQLException {
+    public static boolean borrow(Book book) throws SQLException {
         try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(
                 "UPDATE Books SET Quantity = Quantity - 1, Issued = Issued + 1 WHERE SN = ? AND Quantity > 0")) {
             stmt.setString(1, book.getSN());
@@ -114,7 +114,7 @@ public class Student {
     }
 
     // Method to return a book
-    public boolean toReturn(Book book) throws SQLException {
+    public static boolean toReturn(Book book) throws SQLException {
         try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(
                 "UPDATE Books SET Quantity = Quantity + 1, Issued = Issued - 1 WHERE SN = ?")) {
             stmt.setString(1, book.getSN());

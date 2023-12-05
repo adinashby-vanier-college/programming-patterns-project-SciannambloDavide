@@ -4,6 +4,7 @@
  */
 package com.mycompany.finalproject;
 
+import static com.sun.org.apache.xalan.internal.xsltc.compiler.util.Type.String;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -116,6 +117,7 @@ public class Library implements LibraryObservable {
         // Return true indicating the book was successfully issued
         return true;
     }
+    
 
     public boolean verifyStudentInformation(Student student) {
         // Check if the student object and its fields are not null and not empty
@@ -174,6 +176,71 @@ public class Library implements LibraryObservable {
         }
         return issuedBooks;
     }
+
+    public static Book findBookBySerialNumber(String serialNumber) throws SQLException {
+        Book foundBook = null;
+        try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Books WHERE SN = ?")) {
+            stmt.setString(1, serialNumber);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    int price = rs.getInt("Price");
+                    int qte = rs.getInt("Quantity");
+                    int issuedQte = rs.getInt("Issued");
+                    String bookName = rs.getString("Title");
+                    String author = rs.getString("Author");
+                    String publisher = rs.getString("Publisher");
+                    String dateOfPurchase = rs.getString("DateOfPurchase"); // Make sure this column name matches your database
+
+                    foundBook = new Book(serialNumber, price, qte, issuedQte, bookName, author, publisher, dateOfPurchase);
+                }
+            }
+        }
+        return foundBook;
+    }
+    private void updateBookInDatabase(Book book) {
+    Connection conn = null;
+    PreparedStatement pstmt = null;
+        try {
+        String sql = "UPDATE books SET qte = ?, issuedQte = ? WHERE SN = ?";
+        pstmt = conn.prepareStatement(sql);
+        pstmt.setInt(1, book.getQte());
+        pstmt.setInt(2, book.getIssuedQte());
+        pstmt.setString(3, book.getSN());
+        pstmt.executeUpdate();
+    } catch (SQLException ex) {
+        // Handle exceptions
+        ex.printStackTrace();
+    } finally {
+        // Close resources, if open
+        try {
+            if (pstmt != null) pstmt.close();
+            if (conn != null) conn.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+}
+
+    public void borrowBook(String serialNumber) throws SQLException {
+    Book book = findBookBySerialNumber(serialNumber);
+    if (book != null && book.getQte() > 0) {
+        book.setQte(book.getQte() - 1);
+        book.setIssuedQte(book.getIssuedQte() + 1);
+        updateBookInDatabase(book);
+        notifyObservers();
+    }
+}
+
+public void returnBook(String serialNumber) throws SQLException {
+    Book book = findBookBySerialNumber(serialNumber);
+    if (book != null && book.getIssuedQte() > 0) {
+        book.setQte(book.getQte() + 1);
+        book.setIssuedQte(book.getIssuedQte() - 1);
+        updateBookInDatabase(book);
+        notifyObservers();
+    }
+}
+
 
     public List<LibraryObserver> getObservers() {
         return observers;
