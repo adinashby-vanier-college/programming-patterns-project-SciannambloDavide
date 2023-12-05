@@ -46,6 +46,8 @@ public class librarianFrame extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         availableBooksTextField = new javax.swing.JTextArea();
+        englishButton = new javax.swing.JButton();
+        frenchButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setLocation(new java.awt.Point(750, 400));
@@ -80,6 +82,10 @@ public class librarianFrame extends javax.swing.JFrame {
         availableBooksTextField.setColumns(20);
         availableBooksTextField.setRows(5);
         jScrollPane2.setViewportView(availableBooksTextField);
+
+        englishButton.setText("English");
+
+        frenchButton.setText("French");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -136,6 +142,12 @@ public class librarianFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 414, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(16, 16, 16))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(englishButton)
+                .addGap(90, 90, 90)
+                .addComponent(frenchButton)
+                .addGap(56, 56, 56))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                     .addContainerGap(363, Short.MAX_VALUE)
@@ -188,7 +200,11 @@ public class librarianFrame extends javax.swing.JFrame {
                             .addComponent(jButton1)
                             .addComponent(jButton2)))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(43, 43, 43))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(englishButton)
+                    .addComponent(frenchButton))
+                .addGap(15, 15, 15))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(61, 61, 61)
@@ -242,6 +258,8 @@ public class librarianFrame extends javax.swing.JFrame {
     private javax.swing.JTextField bookNameTextField;
     private javax.swing.JLabel dateLabel;
     private javax.swing.JTextField dateTextField;
+    private javax.swing.JButton englishButton;
+    private javax.swing.JButton frenchButton;
     public javax.swing.JTextArea issuedBooksTextArea;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
