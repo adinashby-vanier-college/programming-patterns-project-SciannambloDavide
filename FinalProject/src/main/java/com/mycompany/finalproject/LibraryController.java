@@ -126,8 +126,8 @@ public class LibraryController {
         for (Book book : libraryController.getLibraryBooks()) {
             booksDisplay.append(book.toString());
         }
-        view2.booksTextArea.setText(booksDisplay.toString());
-        view3.booksTextArea.setText(booksDisplay.toString());
+        view2.availableBooksTextField.setText(booksDisplay.toString());
+        view3.issuedBooksTextArea.setText(booksDisplay.toString());
 
     }
 }

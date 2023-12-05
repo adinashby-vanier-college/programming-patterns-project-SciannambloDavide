@@ -17,9 +17,20 @@ import java.sql.Statement;
 public class DatabaseConnection {
 
     private static final String DATABASE_URL = "jdbc:sqlite:src/main/resources/LibrarySystem.db";
+    private static DatabaseConnection instance;
 
     public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(DATABASE_URL);
+    }
+     public static DatabaseConnection getInstance() {
+        if (instance == null) {
+            synchronized (DatabaseConnection.class) {
+                if (instance == null) {
+                    instance = new DatabaseConnection();
+                }
+            }
+        }
+        return instance;
     }
 
     public static void initialize() {

@@ -104,7 +104,7 @@ public class Library implements LibraryObservable {
         // Decrease the quantity of available copies and increase the issued copies
         book.setQte(book.getQte() - 1);
         book.setIssuedQte(book.getIssuedQte() + 1);
-
+        books.remove(book);
         // Add a new entry to the "IssuedBooks" table
         addToIssuedBooksTable(book, student);
 
@@ -147,6 +147,52 @@ public class Library implements LibraryObservable {
         }
         return false; // Book with the specified SN is not in the library
     }
+      public boolean returnBook(Book book, Student student) {
+        String deleteQuery = "DELETE FROM IssuedBooks WHERE SN = ? AND StId = ?";
+
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
+             PreparedStatement deleteStatement = connection.prepareStatement(deleteQuery)) {
+            deleteStatement.setString(1, book.getSN());
+            deleteStatement.setInt(2, student.getStudentId());
+
+            // Execute the delete query
+            int rowsDeleted = deleteStatement.executeUpdate();
+
+            if (rowsDeleted > 0) {
+                // Successfully returned the book, update book quantities
+                book.setQte(book.getQte() + 1);
+                book.setIssuedQte(book.getIssuedQte() - 1);
+                updateBookInDatabase(book);
+
+                return true;
+            } else {
+                // No matching entry found in IssuedBooks
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        
+    }
+      
+      private void updateBookInDatabase(Book book) {
+        String updateQuery = "UPDATE Books SET Quantity = ?, Issued = ? WHERE SN = ?";
+
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
+             PreparedStatement updateStatement = connection.prepareStatement(updateQuery)) {
+            updateStatement.setInt(1, book.getQte());
+            updateStatement.setInt(2, book.getIssuedQte());
+            updateStatement.setString(3, book.getSN());
+
+            // Execute the update query
+            updateStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
     public List<LibraryObserver> getObservers() {
         return observers;
